@@ -10,14 +10,14 @@ readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "DigitalPhonetics" }]
 dependencies = [
-  "numpy==2.4.4",
-  "scipy==1.17.1",
-  "scikit-learn==1.7.2",
+  "numpy>=2.0,<3",
+  "scipy>=1.13,<2",
+  "scikit-learn>=1.5,<2",
 ]
 
 [project.optional-dependencies]
 dev = [
-  "pytest==8.4.2",
+  "pytest>=8,<9",
 ]
 
 [tool.setuptools]
