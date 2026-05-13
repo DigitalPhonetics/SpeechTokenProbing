@@ -27,14 +27,9 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 
-if __package__ is None or __package__ == "":
-    import sys
-
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-from minimal_probe.io import ensure_stage_exists, load_probe_rows, resolve_stage_list
-from minimal_probe.labeling import resolve_labeling
-from minimal_probe.stats import set_seed
+from .io import ensure_stage_exists, load_probe_rows, resolve_stage_list
+from .labeling import resolve_labeling
+from .stats import set_seed
 
 
 def _cosine(d1: Dict[str, float], d2: Dict[str, float]) -> float:

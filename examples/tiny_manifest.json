@@ -1,0 +1,782 @@
+[
+  {
+    "id": "utt_01_low",
+    "speaker": "spk_01",
+    "text": "sample low 1",
+    "token_sets": {
+      "tokenizer": [
+        11,
+        21,
+        31,
+        41
+      ],
+      "zero": [
+        111,
+        121,
+        131,
+        141
+      ],
+      "text_only": [
+        211,
+        221,
+        231,
+        241
+      ]
+    },
+    "labels": {
+      "gender": "F",
+      "valence": 0.11,
+      "arousal": 0.21,
+      "dominance": 0.31
+    },
+    "phones": {
+      "tokenizer": [
+        "AH0",
+        "N",
+        "T",
+        "S"
+      ]
+    }
+  },
+  {
+    "id": "utt_01_high",
+    "speaker": "spk_01",
+    "text": "sample high 1",
+    "token_sets": {
+      "tokenizer": [
+        12,
+        22,
+        32,
+        42
+      ],
+      "zero": [
+        112,
+        122,
+        132,
+        142
+      ],
+      "text_only": [
+        212,
+        222,
+        232,
+        242
+      ]
+    },
+    "labels": {
+      "gender": "M",
+      "valence": 0.89,
+      "arousal": 0.79,
+      "dominance": 0.69
+    },
+    "phones": {
+      "tokenizer": [
+        "IH1",
+        "L",
+        "AE1",
+        "M"
+      ]
+    }
+  },
+  {
+    "id": "utt_02_low",
+    "speaker": "spk_02",
+    "text": "sample low 2",
+    "token_sets": {
+      "tokenizer": [
+        12,
+        22,
+        32,
+        42
+      ],
+      "zero": [
+        112,
+        122,
+        132,
+        142
+      ],
+      "text_only": [
+        212,
+        222,
+        232,
+        242
+      ]
+    },
+    "labels": {
+      "gender": "F",
+      "valence": 0.12,
+      "arousal": 0.22,
+      "dominance": 0.32
+    },
+    "phones": {
+      "tokenizer": [
+        "AH0",
+        "N",
+        "T",
+        "S"
+      ]
+    }
+  },
+  {
+    "id": "utt_02_high",
+    "speaker": "spk_02",
+    "text": "sample high 2",
+    "token_sets": {
+      "tokenizer": [
+        13,
+        23,
+        33,
+        43
+      ],
+      "zero": [
+        113,
+        123,
+        133,
+        143
+      ],
+      "text_only": [
+        213,
+        223,
+        233,
+        243
+      ]
+    },
+    "labels": {
+      "gender": "M",
+      "valence": 0.88,
+      "arousal": 0.78,
+      "dominance": 0.68
+    },
+    "phones": {
+      "tokenizer": [
+        "IH1",
+        "L",
+        "AE1",
+        "M"
+      ]
+    }
+  },
+  {
+    "id": "utt_03_low",
+    "speaker": "spk_03",
+    "text": "sample low 3",
+    "token_sets": {
+      "tokenizer": [
+        13,
+        23,
+        33,
+        43
+      ],
+      "zero": [
+        113,
+        123,
+        133,
+        143
+      ],
+      "text_only": [
+        213,
+        223,
+        233,
+        243
+      ]
+    },
+    "labels": {
+      "gender": "F",
+      "valence": 0.13,
+      "arousal": 0.23,
+      "dominance": 0.33
+    },
+    "phones": {
+      "tokenizer": [
+        "AH0",
+        "N",
+        "T",
+        "S"
+      ]
+    }
+  },
+  {
+    "id": "utt_03_high",
+    "speaker": "spk_03",
+    "text": "sample high 3",
+    "token_sets": {
+      "tokenizer": [
+        14,
+        24,
+        34,
+        44
+      ],
+      "zero": [
+        114,
+        124,
+        134,
+        144
+      ],
+      "text_only": [
+        214,
+        224,
+        234,
+        244
+      ]
+    },
+    "labels": {
+      "gender": "M",
+      "valence": 0.87,
+      "arousal": 0.77,
+      "dominance": 0.67
+    },
+    "phones": {
+      "tokenizer": [
+        "IH1",
+        "L",
+        "AE1",
+        "M"
+      ]
+    }
+  },
+  {
+    "id": "utt_04_low",
+    "speaker": "spk_04",
+    "text": "sample low 4",
+    "token_sets": {
+      "tokenizer": [
+        14,
+        24,
+        34,
+        44
+      ],
+      "zero": [
+        114,
+        124,
+        134,
+        144
+      ],
+      "text_only": [
+        214,
+        224,
+        234,
+        244
+      ]
+    },
+    "labels": {
+      "gender": "F",
+      "valence": 0.14,
+      "arousal": 0.24,
+      "dominance": 0.34
+    },
+    "phones": {
+      "tokenizer": [
+        "AH0",
+        "N",
+        "T",
+        "S"
+      ]
+    }
+  },
+  {
+    "id": "utt_04_high",
+    "speaker": "spk_04",
+    "text": "sample high 4",
+    "token_sets": {
+      "tokenizer": [
+        15,
+        25,
+        35,
+        45
+      ],
+      "zero": [
+        115,
+        125,
+        135,
+        145
+      ],
+      "text_only": [
+        215,
+        225,
+        235,
+        245
+      ]
+    },
+    "labels": {
+      "gender": "M",
+      "valence": 0.86,
+      "arousal": 0.76,
+      "dominance": 0.66
+    },
+    "phones": {
+      "tokenizer": [
+        "IH1",
+        "L",
+        "AE1",
+        "M"
+      ]
+    }
+  },
+  {
+    "id": "utt_05_low",
+    "speaker": "spk_05",
+    "text": "sample low 5",
+    "token_sets": {
+      "tokenizer": [
+        15,
+        25,
+        35,
+        45
+      ],
+      "zero": [
+        115,
+        125,
+        135,
+        145
+      ],
+      "text_only": [
+        215,
+        225,
+        235,
+        245
+      ]
+    },
+    "labels": {
+      "gender": "F",
+      "valence": 0.15,
+      "arousal": 0.25,
+      "dominance": 0.35
+    },
+    "phones": {
+      "tokenizer": [
+        "AH0",
+        "N",
+        "T",
+        "S"
+      ]
+    }
+  },
+  {
+    "id": "utt_05_high",
+    "speaker": "spk_05",
+    "text": "sample high 5",
+    "token_sets": {
+      "tokenizer": [
+        16,
+        26,
+        36,
+        46
+      ],
+      "zero": [
+        116,
+        126,
+        136,
+        146
+      ],
+      "text_only": [
+        216,
+        226,
+        236,
+        246
+      ]
+    },
+    "labels": {
+      "gender": "M",
+      "valence": 0.85,
+      "arousal": 0.75,
+      "dominance": 0.65
+    },
+    "phones": {
+      "tokenizer": [
+        "IH1",
+        "L",
+        "AE1",
+        "M"
+      ]
+    }
+  },
+  {
+    "id": "utt_06_low",
+    "speaker": "spk_06",
+    "text": "sample low 6",
+    "token_sets": {
+      "tokenizer": [
+        16,
+        26,
+        36,
+        46
+      ],
+      "zero": [
+        116,
+        126,
+        136,
+        146
+      ],
+      "text_only": [
+        216,
+        226,
+        236,
+        246
+      ]
+    },
+    "labels": {
+      "gender": "F",
+      "valence": 0.16,
+      "arousal": 0.26,
+      "dominance": 0.36
+    },
+    "phones": {
+      "tokenizer": [
+        "AH0",
+        "N",
+        "T",
+        "S"
+      ]
+    }
+  },
+  {
+    "id": "utt_06_high",
+    "speaker": "spk_06",
+    "text": "sample high 6",
+    "token_sets": {
+      "tokenizer": [
+        17,
+        27,
+        37,
+        47
+      ],
+      "zero": [
+        117,
+        127,
+        137,
+        147
+      ],
+      "text_only": [
+        217,
+        227,
+        237,
+        247
+      ]
+    },
+    "labels": {
+      "gender": "M",
+      "valence": 0.84,
+      "arousal": 0.74,
+      "dominance": 0.64
+    },
+    "phones": {
+      "tokenizer": [
+        "IH1",
+        "L",
+        "AE1",
+        "M"
+      ]
+    }
+  },
+  {
+    "id": "utt_07_low",
+    "speaker": "spk_07",
+    "text": "sample low 7",
+    "token_sets": {
+      "tokenizer": [
+        17,
+        27,
+        37,
+        47
+      ],
+      "zero": [
+        117,
+        127,
+        137,
+        147
+      ],
+      "text_only": [
+        217,
+        227,
+        237,
+        247
+      ]
+    },
+    "labels": {
+      "gender": "F",
+      "valence": 0.17,
+      "arousal": 0.27,
+      "dominance": 0.37
+    },
+    "phones": {
+      "tokenizer": [
+        "AH0",
+        "N",
+        "T",
+        "S"
+      ]
+    }
+  },
+  {
+    "id": "utt_07_high",
+    "speaker": "spk_07",
+    "text": "sample high 7",
+    "token_sets": {
+      "tokenizer": [
+        18,
+        28,
+        38,
+        48
+      ],
+      "zero": [
+        118,
+        128,
+        138,
+        148
+      ],
+      "text_only": [
+        218,
+        228,
+        238,
+        248
+      ]
+    },
+    "labels": {
+      "gender": "M",
+      "valence": 0.83,
+      "arousal": 0.73,
+      "dominance": 0.63
+    },
+    "phones": {
+      "tokenizer": [
+        "IH1",
+        "L",
+        "AE1",
+        "M"
+      ]
+    }
+  },
+  {
+    "id": "utt_08_low",
+    "speaker": "spk_08",
+    "text": "sample low 8",
+    "token_sets": {
+      "tokenizer": [
+        18,
+        28,
+        38,
+        48
+      ],
+      "zero": [
+        118,
+        128,
+        138,
+        148
+      ],
+      "text_only": [
+        218,
+        228,
+        238,
+        248
+      ]
+    },
+    "labels": {
+      "gender": "F",
+      "valence": 0.18,
+      "arousal": 0.28,
+      "dominance": 0.38
+    },
+    "phones": {
+      "tokenizer": [
+        "AH0",
+        "N",
+        "T",
+        "S"
+      ]
+    }
+  },
+  {
+    "id": "utt_08_high",
+    "speaker": "spk_08",
+    "text": "sample high 8",
+    "token_sets": {
+      "tokenizer": [
+        19,
+        29,
+        39,
+        49
+      ],
+      "zero": [
+        119,
+        129,
+        139,
+        149
+      ],
+      "text_only": [
+        219,
+        229,
+        239,
+        249
+      ]
+    },
+    "labels": {
+      "gender": "M",
+      "valence": 0.82,
+      "arousal": 0.72,
+      "dominance": 0.62
+    },
+    "phones": {
+      "tokenizer": [
+        "IH1",
+        "L",
+        "AE1",
+        "M"
+      ]
+    }
+  },
+  {
+    "id": "utt_09_low",
+    "speaker": "spk_09",
+    "text": "sample low 9",
+    "token_sets": {
+      "tokenizer": [
+        19,
+        29,
+        39,
+        49
+      ],
+      "zero": [
+        119,
+        129,
+        139,
+        149
+      ],
+      "text_only": [
+        219,
+        229,
+        239,
+        249
+      ]
+    },
+    "labels": {
+      "gender": "F",
+      "valence": 0.19,
+      "arousal": 0.29,
+      "dominance": 0.39
+    },
+    "phones": {
+      "tokenizer": [
+        "AH0",
+        "N",
+        "T",
+        "S"
+      ]
+    }
+  },
+  {
+    "id": "utt_09_high",
+    "speaker": "spk_09",
+    "text": "sample high 9",
+    "token_sets": {
+      "tokenizer": [
+        20,
+        30,
+        40,
+        50
+      ],
+      "zero": [
+        120,
+        130,
+        140,
+        150
+      ],
+      "text_only": [
+        220,
+        230,
+        240,
+        250
+      ]
+    },
+    "labels": {
+      "gender": "M",
+      "valence": 0.81,
+      "arousal": 0.71,
+      "dominance": 0.61
+    },
+    "phones": {
+      "tokenizer": [
+        "IH1",
+        "L",
+        "AE1",
+        "M"
+      ]
+    }
+  },
+  {
+    "id": "utt_10_low",
+    "speaker": "spk_10",
+    "text": "sample low 10",
+    "token_sets": {
+      "tokenizer": [
+        20,
+        30,
+        40,
+        50
+      ],
+      "zero": [
+        120,
+        130,
+        140,
+        150
+      ],
+      "text_only": [
+        220,
+        230,
+        240,
+        250
+      ]
+    },
+    "labels": {
+      "gender": "F",
+      "valence": 0.2,
+      "arousal": 0.3,
+      "dominance": 0.4
+    },
+    "phones": {
+      "tokenizer": [
+        "AH0",
+        "N",
+        "T",
+        "S"
+      ]
+    }
+  },
+  {
+    "id": "utt_10_high",
+    "speaker": "spk_10",
+    "text": "sample high 10",
+    "token_sets": {
+      "tokenizer": [
+        21,
+        31,
+        41,
+        51
+      ],
+      "zero": [
+        121,
+        131,
+        141,
+        151
+      ],
+      "text_only": [
+        221,
+        231,
+        241,
+        251
+      ]
+    },
+    "labels": {
+      "gender": "M",
+      "valence": 0.8,
+      "arousal": 0.7,
+      "dominance": 0.6
+    },
+    "phones": {
+      "tokenizer": [
+        "IH1",
+        "L",
+        "AE1",
+        "M"
+      ]
+    }
+  }
+]

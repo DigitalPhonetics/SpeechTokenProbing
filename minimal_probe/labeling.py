@@ -24,6 +24,25 @@ import numpy as np
 from .io import ProbeRow, get_nested_label
 
 
+def validate_quantile_bounds(qlo: float, qhi: float) -> None:
+    """Validate quantile thresholds used for binary tail labeling.
+
+    Args:
+        qlo: Low quantile.
+        qhi: High quantile.
+
+    Raises:
+        ValueError: If thresholds are out of range or degenerate.
+    """
+
+    lo = float(qlo)
+    hi = float(qhi)
+    if lo < 0.0 or hi > 1.0 or lo >= hi:
+        raise ValueError(
+            f"Invalid quantile bounds: require 0 <= qlo < qhi <= 1, got qlo={qlo} qhi={qhi}"
+        )
+
+
 @dataclass
 class LabelingResult:
     """Container for resolved binary labels and labeling metadata.
@@ -110,6 +129,8 @@ def labels_from_quantiles(rows: List[ProbeRow], score_field: str, qlo: float, qh
             empty after quantile filtering.
     """
 
+    validate_quantile_bounds(qlo=qlo, qhi=qhi)
+
     vals: List[Tuple[str, float]] = []
     for r in rows:
         v = get_nested_label(r.labels, score_field)
@@ -191,4 +212,5 @@ def resolve_labeling(
 
     if has_binary:
         return labels_from_binary_field(rows, label_field=label_field, pos_label=pos_label, neg_label=neg_label)
+    validate_quantile_bounds(qlo=qlo, qhi=qhi)
     return labels_from_quantiles(rows, score_field=score_field, qlo=qlo, qhi=qhi)

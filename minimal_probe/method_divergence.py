@@ -23,14 +23,9 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 
-if __package__ is None or __package__ == "":
-    import sys
-
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-from minimal_probe.io import ensure_stage_exists, load_probe_rows, resolve_stage_list
-from minimal_probe.labeling import resolve_labeling
-from minimal_probe.stats import jsd_from_counts, sample_balanced_groups, set_seed, token_distribution
+from .io import ensure_stage_exists, load_probe_rows, resolve_stage_list, resolve_stage_vocab_ids
+from .labeling import resolve_labeling
+from .stats import jsd_from_counts, sample_balanced_groups, set_seed, token_distribution
 
 
 def _rows_by_id(rows):
@@ -228,6 +223,12 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--num-random-trials", type=int, default=20)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument(
+        "--stage-vocab-ids",
+        default="",
+        help="Required for multi-stage comparisons. Format: stage:id,stage:id,... "
+        "with identical ids across compared stages.",
+    )
+    ap.add_argument(
         "--balanced-downsample",
         action="store_true",
         help="Use class-balanced downsampling before divergence (non-paper alternative)",
@@ -250,6 +251,7 @@ def main() -> None:
     rows = load_probe_rows(args.manifest_json)
     stages = resolve_stage_list(rows, args.stages)
     ensure_stage_exists(rows, stages)
+    resolved_stage_vocab_ids = resolve_stage_vocab_ids(args.stage_vocab_ids, stages=stages)
 
     lab = resolve_labeling(
         rows=rows,
@@ -283,6 +285,8 @@ def main() -> None:
     out = {
         "method": "distributional_divergence",
         "manifest_json": str(args.manifest_json),
+        "stage_vocab_ids": resolved_stage_vocab_ids,
+        "shared_vocab_id": next(iter(set(resolved_stage_vocab_ids.values())), None) if resolved_stage_vocab_ids else None,
         "labeling": {
             "mode": lab.mode,
             "positive_name": lab.positive_name,

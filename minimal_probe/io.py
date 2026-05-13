@@ -20,7 +20,7 @@ import json
 import warnings
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Sequence, Tuple
 
 
 @dataclass
@@ -217,10 +217,17 @@ def load_probe_rows(path: str | Path) -> List[ProbeRow]:
         raise ValueError(f"Unsupported manifest type: {type(obj).__name__}")
 
     rows: List[ProbeRow] = []
+    seen_ids: Dict[str, int] = {}
     dropped_token_items_total = 0
     dropped_phone_items_total = 0
     for i, raw in enumerate(raw_rows):
         row, row_stats = _normalize_row(raw, fallback_id=f"row_{i}")
+        if row.row_id in seen_ids:
+            first_index = seen_ids[row.row_id]
+            raise ValueError(
+                f"Duplicate row id {row.row_id!r} found at row index {i}; first occurrence was at index {first_index}"
+            )
+        seen_ids[row.row_id] = i
         rows.append(row)
         dropped_token_items_total += int(row_stats.get("dropped_token_items", 0))
         dropped_phone_items_total += int(row_stats.get("dropped_phone_items", 0))
@@ -309,3 +316,74 @@ def ensure_stage_exists(rows: List[ProbeRow], stages: List[str]) -> None:
     missing = [s for s in stages if s not in known]
     if missing:
         raise ValueError(f"Requested stages not found in token_sets: {missing}")
+
+
+def resolve_stage_vocab_ids(stage_vocab_ids: str, stages: Sequence[str]) -> Dict[str, str]:
+    """Parse and validate strict cross-stage vocabulary identity metadata.
+
+    This guard is required when comparing multiple stages. Every requested stage
+    must be assigned a vocabulary id and all ids must match.
+
+    Args:
+        stage_vocab_ids: CLI string in the format ``stage:id,stage:id,...``.
+        stages: Resolved stage names used in the current run.
+
+    Returns:
+        Mapping from stage name to vocabulary id.
+
+    Raises:
+        ValueError: If the mapping is missing, malformed, references unknown
+            stages, omits requested stages, or contains mismatched ids.
+    """
+
+    stage_list = list(stages)
+    if len(stage_list) <= 1:
+        return {}
+
+    raw = str(stage_vocab_ids).strip()
+    if not raw:
+        raise ValueError(
+            "Multi-stage comparison requires --stage-vocab-ids with format "
+            "'stage:id,stage:id,...' and identical ids across compared stages"
+        )
+
+    parsed: Dict[str, str] = {}
+    for part in raw.split(","):
+        item = part.strip()
+        if not item:
+            continue
+        if ":" not in item:
+            raise ValueError(
+                f"Invalid --stage-vocab-ids entry {item!r}; expected 'stage:id'"
+            )
+        stage, vocab_id = item.split(":", 1)
+        stage = stage.strip()
+        vocab_id = vocab_id.strip()
+        if not stage or not vocab_id:
+            raise ValueError(
+                f"Invalid --stage-vocab-ids entry {item!r}; stage and id must be non-empty"
+            )
+        if stage in parsed:
+            raise ValueError(f"Duplicate stage {stage!r} in --stage-vocab-ids")
+        parsed[stage] = vocab_id
+
+    unknown = sorted(set(parsed.keys()) - set(stage_list))
+    if unknown:
+        raise ValueError(
+            f"--stage-vocab-ids contains unknown stages not requested in --stages: {unknown}"
+        )
+
+    missing = [s for s in stage_list if s not in parsed]
+    if missing:
+        raise ValueError(
+            f"--stage-vocab-ids missing requested stages: {missing}"
+        )
+
+    unique_ids = sorted(set(parsed[s] for s in stage_list))
+    if len(unique_ids) != 1:
+        mismatch = {s: parsed[s] for s in stage_list}
+        raise ValueError(
+            "Cross-stage comparison requires identical vocabulary ids across stages; "
+            f"got {mismatch}"
+        )
+    return {s: parsed[s] for s in stage_list}

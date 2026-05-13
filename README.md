@@ -1,11 +1,34 @@
 # SpeechTokenProbing
 
-Model-independent implementation of:
+Minimal, model-agnostic implementation of three probe families from the paper:
 
-1. **Distributional divergence** (`method_divergence.py`)
-2. **Token-based classifiers** (`method_classifier.py`)
-3. **Attribute-conditioned representation** (`method_attr_repr.py`)
+1. Distributional divergence (`minimal_probe.method_divergence`)
+2. Token-based classifiers (`minimal_probe.method_classifier`)
+3. Attribute-conditioned token-phone representation (`minimal_probe.method_attr_repr`)
 
+This repository is a probing toolkit release. It does **not** include the full paper pipeline artifacts (token extraction, MFA/VAD preprocessing, shared-text/silence controls, table-generation scripts, or full paper outputs).
+
+## Installation
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Optional editable install:
+
+```bash
+python -m pip install -e .
+```
+
+## Package Layout
+
+Code lives in the `minimal_probe/` package and is intended to run via:
+
+```bash
+python -m minimal_probe.method_divergence ...
+python -m minimal_probe.method_classifier ...
+python -m minimal_probe.method_attr_repr ...
+```
 
 ## Canonical Input Schema
 
@@ -34,82 +57,75 @@ Input manifest is JSON list (or dict of rows), each row following:
 ```
 
 Required fields:
-- `id` (string)
-- `speaker` (string)
-- `token_sets` (dict stage -> token sequence)
-- `labels` (dict)
 
-Optional:
-- `phones` (dict stage -> aligned phone sequence), used only by Method 3.
+- `id` (must be unique)
+- `speaker`
+- `token_sets`
+- `labels`
 
-Notes:
-- Stage names in `token_sets` are arbitrary and user-defined.
-- Method 3 only applies to stages that also exist in `phones` with aligned same-length sequences.
+Optional fields:
+
+- `text`
+- `phones` (required by Method 3 for aligned token-phone analysis)
 
 ## Labeling Modes
 
-All three scripts support both:
-- **binary mode**: `--label-field`, `--pos-label`, `--neg-label`
-- **quantile mode**: `--score-field`, `--qlo`, `--qhi`
+All scripts support exactly one labeling mode per run:
 
-Choose exactly one mode per run.
+- Binary mode: `--label-field`, `--pos-label`, `--neg-label`
+- Quantile mode: `--score-field`, `--qlo`, `--qhi`
 
-## Paper-Default Behavior
+Quantile bounds are validated globally and must satisfy `0 <= qlo < qhi <= 1`.
 
-- **Distributional divergence** uses full-group empirical distributions by default (no class downsampling).
-- **Token-based classifiers** uses per-stage speaker-disjoint splits by default and marks only failing stages as `ok=false` (run continues).
-- **Attribute-conditioned representation** skips missing/misaligned aligned rows, reports skip counts, and fails a stage only if no usable aligned rows remain.
+## Strict Cross-Stage Vocabulary Guard
 
-## Optional Flags
-
-- Distributional divergence:
-  - `--balanced-downsample` to use class-balanced downsampling before divergence.
-- Token-based classifiers:
-  - `--shared-split-across-stages` to force one shared split across requested stages.
-  - `--allow-utterance-fallback` to allow utterance-level fallback if speaker-disjoint split fails.
-
-## Distributional divergence Example
+Method 1 and Method 2 perform cross-stage comparisons. For multi-stage runs you must pass:
 
 ```bash
-python3 -m minimal_probe.method_divergence data.json \
+--stage-vocab-ids tokenizer:shared,zero:shared,text_only:shared
+```
+
+All compared stages must resolve to the same vocab id, otherwise execution fails.
+
+## Method 1 Example (Divergence)
+
+```bash
+python -m minimal_probe.method_divergence examples/tiny_manifest.json \
   --stages tokenizer,zero,text_only \
+  --stage-vocab-ids tokenizer:shared,zero:shared,text_only:shared \
   --label-field gender --pos-label M --neg-label F \
   --output-prefix out/divergence
 ```
 
-Alternative:
+## Method 2 Example (Classifier)
+
+Default policy uses **shared speaker-disjoint split across stages** and repeated runs for uncertainty.
 
 ```bash
-python3 -m minimal_probe.method_divergence data.json \
+python -m minimal_probe.method_classifier examples/tiny_manifest.json \
   --stages tokenizer,zero,text_only \
-  --label-field gender --pos-label M --neg-label F \
-  --balanced-downsample \
-  --output-prefix out/divergence_downsampled
-```
-
-## Token-based classifiers Example
-
-```bash
-python3 -m minimal_probe.method_classifier data.json \
-  --stages tokenizer,zero,text_only \
+  --stage-vocab-ids tokenizer:shared,zero:shared,text_only:shared \
   --score-field valence --qlo 0.2 --qhi 0.8 \
+  --num-splits 10 \
+  --class-weight balanced \
   --output-prefix out/classifier
 ```
 
-Optional shared-split alternative:
+Legacy split policy can be requested explicitly:
 
 ```bash
-python3 -m minimal_probe.method_classifier data.json \
+python -m minimal_probe.method_classifier examples/tiny_manifest.json \
   --stages tokenizer,zero,text_only \
+  --stage-vocab-ids tokenizer:shared,zero:shared,text_only:shared \
   --score-field valence --qlo 0.2 --qhi 0.8 \
-  --shared-split-across-stages \
-  --output-prefix out/classifier_shared_split
+  --per-stage-split \
+  --output-prefix out/classifier_per_stage
 ```
 
-## Attribute-conditioned representation Example
+## Method 3 Example (Attribute-Conditioned)
 
 ```bash
-python3 -m minimal_probe.method_attr_repr data.json \
+python -m minimal_probe.method_attr_repr examples/tiny_manifest.json \
   --stages tokenizer \
   --label-field gender --pos-label M --neg-label F \
   --output-prefix out/attr_repr
@@ -118,11 +134,23 @@ python3 -m minimal_probe.method_attr_repr data.json \
 ## Outputs
 
 Each method writes:
-- `<output-prefix>.json` (compact machine-readable result)
-- `<output-prefix>.txt` (short human summary)
 
-## Defaults 
+- `<output-prefix>.json`
+- `<output-prefix>.txt`
 
-- Distributional divergence: `--num-random-trials 20`, `--min-token-freq 50`
-- Token-based classifiers: speaker-disjoint split `0.8/0.2`, train-only frequency filter `0.002%`
-- Attribute-conditioned representation: `count>=400`, `balance>=0.2`, `|lambda|>=0.015`
+Method 2 JSON now includes:
+
+- per-split series metadata
+- aggregate mean/std/95% CI for classifier metrics
+- aggregate cross-stage consistency summaries
+
+## Example Data and Tests
+
+- Example manifest: `examples/tiny_manifest.json`
+- Tests: `tests/`
+
+Run tests:
+
+```bash
+pytest -q
+```

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minimal-probe"
+version = "0.1.0"
+description = "Minimal, model-agnostic speech-token probing toolkit"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "DigitalPhonetics" }]
+dependencies = [
+  "numpy==2.4.4",
+  "scipy==1.17.1",
+  "scikit-learn==1.7.2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==8.4.2",
+]
+
+[tool.setuptools]
+packages = ["minimal_probe"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

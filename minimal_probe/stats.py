@@ -24,7 +24,6 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 from scipy.spatial.distance import jensenshannon
-from sklearn.model_selection import GroupShuffleSplit, train_test_split
 
 
 def set_seed(seed: int) -> None:
@@ -135,6 +134,8 @@ def split_speaker_disjoint(
         ValueError: If labels are single-class, or when no valid speaker split
             is found and fallback is disabled.
     """
+
+    from sklearn.model_selection import GroupShuffleSplit, train_test_split
 
     y_arr = np.asarray(y, dtype=np.int64)
     idx = np.arange(len(y_arr))
