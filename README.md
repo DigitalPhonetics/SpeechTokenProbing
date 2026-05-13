@@ -56,19 +56,19 @@ Choose exactly one mode per run.
 
 ## Paper-Default Behavior
 
-- **Method 1** uses full-group empirical distributions by default (no class downsampling).
-- **Method 2** uses per-stage speaker-disjoint splits by default and marks only failing stages as `ok=false` (run continues).
-- **Method 3** skips missing/misaligned aligned rows, reports skip counts, and fails a stage only if no usable aligned rows remain.
+- **Distributional divergence** uses full-group empirical distributions by default (no class downsampling).
+- **Token-based classifiers** uses per-stage speaker-disjoint splits by default and marks only failing stages as `ok=false` (run continues).
+- **Attribute-conditioned representation** skips missing/misaligned aligned rows, reports skip counts, and fails a stage only if no usable aligned rows remain.
 
 ## Optional Flags
 
-- Method 1:
+- Distributional divergence:
   - `--balanced-downsample` to use class-balanced downsampling before divergence.
-- Method 2:
+- Token-based classifiers:
   - `--shared-split-across-stages` to force one shared split across requested stages.
   - `--allow-utterance-fallback` to allow utterance-level fallback if speaker-disjoint split fails.
 
-## Method 1 Example (Divergence)
+## Distributional divergence Example
 
 ```bash
 python3 -m minimal_probe.method_divergence data.json \
@@ -87,7 +87,7 @@ python3 -m minimal_probe.method_divergence data.json \
   --output-prefix out/divergence_downsampled
 ```
 
-## Method 2 Example (Classifier)
+## Token-based classifiers Example
 
 ```bash
 python3 -m minimal_probe.method_classifier data.json \
@@ -106,7 +106,7 @@ python3 -m minimal_probe.method_classifier data.json \
   --output-prefix out/classifier_shared_split
 ```
 
-## Method 3 Example (Attribute-Conditioned)
+## Attribute-conditioned representation Example
 
 ```bash
 python3 -m minimal_probe.method_attr_repr data.json \
@@ -123,6 +123,6 @@ Each method writes:
 
 ## Defaults 
 
-- Method 1: `--num-random-trials 20`, `--min-token-freq 50`
-- Method 2: speaker-disjoint split `0.8/0.2`, train-only frequency filter `0.002%`
-- Method 3: `count>=400`, `balance>=0.2`, `|lambda|>=0.015`
+- Distributional divergence: `--num-random-trials 20`, `--min-token-freq 50`
+- Token-based classifiers: speaker-disjoint split `0.8/0.2`, train-only frequency filter `0.002%`
+- Attribute-conditioned representation: `count>=400`, `balance>=0.2`, `|lambda|>=0.015`
